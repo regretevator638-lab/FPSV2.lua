@@ -5,14 +5,7 @@ local validKeys = {
     ["GEN-KEY-003"] = true
 }
 
--- === ส่วนที่ 2: ฟังก์ชันรันสคริปต์หลักของคุณ ===
-local function runMyScript()
-    -- !!! เอาโค้ดหลักของคุณ (เช่น loadstring ที่คุณชอบใช้) มาวางตรงนี้ !!!
-    print("ระบบกำลังรัน...")
-    -- ตัวอย่าง: loadstring(game:HttpGet("..."))()
-end
-
--- === ส่วนที่ 3: ระบบ UI เช็คคีย์ ===
+-- === ส่วนที่ 2: ระบบ UI ===
 local player = game.Players.LocalPlayer
 local gui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
 local frame = Instance.new("Frame", gui)
@@ -31,13 +24,22 @@ btn.Position = UDim2.new(0, 0, 0.5, 0)
 btn.Text = "เริ่มทำงาน"
 btn.Parent = frame
 
+-- === ส่วนที่ 3: ระบบเช็คและรัน ===
 btn.MouseButton1Click:Connect(function()
     if validKeys[input.Text] then
-        gui:Destroy() -- ลบหน้าต่างคีย์ทิ้งก่อนรัน
-        runMyScript() -- เรียกสคริปต์หลักทำงาน
+        print("คีย์ถูกต้อง กำลังสั่งรันสคริปต์...")
+        gui:Destroy() -- ลบ UI ทิ้งก่อน
+        
+        -- บังคับรันแบบดึงจากภายนอก
+        local success, err = pcall(function()
+            -- !!! ก๊อปปี้โค้ดสคริปต์หลักของคุณมาวางตรงนี้ !!!
+            -- เช่น loadstring(game:HttpGet("..."))()
+        end)
+        
+        if not success then
+            warn("สคริปต์หลักติดปัญหา: " .. tostring(err))
+        end
     else
         input.Text = "คีย์ผิด!"
-        task.wait(1)
-        input.Text = ""
     end
 end)
