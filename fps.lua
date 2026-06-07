@@ -16,9 +16,7 @@ local playerGui  = player:WaitForChild("PlayerGui")
 
 -- ตรวจรูปแบบคีย์ xxxx-xxxx-xxxx-TIMESTAMP
 local function isValidKey(k)
-    if not k then return false end
-    local parts = k:split and k:split("-") or {}
-    -- แยกด้วย pattern
+    if not k or type(k) ~= "string" then return false end
     local p = {}
     for part in k:gmatch("[^%-]+") do table.insert(p, part) end
     if #p ~= 4 then return false end
